@@ -67,9 +67,30 @@ class GetMenuCommand extends Command
             return;
         }
 
+        try {
+            $filename = $_SERVER['DOCUMENT_ROOT'] . 'resources/files/' . $input->getArgument('filename');
+            $menus = $this->menuFilter->filter(
+                $this->fileParser->getMenus($filename),
+                $this->getMenuRules($input),
+                $this->getMealRules($input)
+            );
+            $this->commandPrinter->render($menus, $output);
+        } catch (Throwable $throwable) {
+            $output->writeln('Unable to get products:');
+            $output->writeln('<error>' . $throwable->getMessage() . '</error>');
+        }
+    }
+
+    private function getMenuRules(InputInterface $input): array
+    {
         $coversRule = new MenuCoversMoreThanRule($input->getArgument('covers'));
         $postcodeRule = new MenuPostcodeRule($input->getArgument('location'));
 
+        return [$coversRule, $postcodeRule];
+    }
+
+    private function getMealRules(InputInterface $input): array
+    {
         $deadline = DateTime::createFromFormat(
             'd/m/y H:i',
             $input->getArgument('day') .
@@ -77,17 +98,7 @@ class GetMenuCommand extends Command
             $input->getArgument('time')
         );
         $mealDeadlineRule = new MealDeliveryDeadlineRule($deadline);
-        $menuRules = [$coversRule, $postcodeRule];
-        $mealRules = [$mealDeadlineRule];
 
-        try {
-            $filename = $_SERVER['DOCUMENT_ROOT'] . 'resources/files/' . $input->getArgument('filename');
-            $menus = $this->fileParser->getMenus($filename);
-            $menus = $this->menuFilter->filter($menus, $menuRules, $mealRules);
-            $this->commandPrinter->render($menus, $output);
-        } catch (Throwable $throwable) {
-            $output->writeln('Unable to get products:');
-            $output->writeln('<error>' . $throwable->getMessage() . '</error>');
-        }
+        return [$mealDeadlineRule];
     }
 }
