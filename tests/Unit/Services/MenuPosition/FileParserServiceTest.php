@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\Unit\Services\MenuPosition;
+namespace App\tests\Unit\Services\MenuPosition;
 
 use App\Exceptions\CreateObjectException;
 use App\Exceptions\FileParseException;
