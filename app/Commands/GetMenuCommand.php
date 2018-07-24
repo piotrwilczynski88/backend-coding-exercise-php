@@ -63,12 +63,9 @@ class GetMenuCommand extends Command
             $this->inputValidator->validate($input);
         } catch (ValidationException $validationException) {
             $output->writeln('<error>' . $validationException->getMessage() . '</error>');
+
             return;
         }
-        $output->writeln([
-            '*** <info>Available menus</info> ****',
-            '=========================',
-        ]);
 
         $coversRule = new MenuCoversMoreThanRule($input->getArgument('covers'));
         $postcodeRule = new MenuPostcodeRule($input->getArgument('location'));

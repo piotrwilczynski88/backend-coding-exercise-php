@@ -13,6 +13,10 @@ class CommandPrinterService
      */
     public function render(array $menus, OutputInterface $output): void
     {
+        $output->writeln([
+            '*** <info>Available menus</info> ****',
+            '=========================',
+        ]);
         if (empty($menus)) {
             $output->writeln('<info>No matching results for given query</info>');
         }
