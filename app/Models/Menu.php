@@ -10,10 +10,12 @@ class Menu
     /** @var array */
     protected $meals = [];
 
-    /**
-     * @return Vendor|null
-     */
-    public function getVendor()
+    public function __construct(Vendor $vendor)
+    {
+        $this->vendor = $vendor;
+    }
+
+    public function getVendor(): Vendor
     {
         return $this->vendor;
     }

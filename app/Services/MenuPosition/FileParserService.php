@@ -78,9 +78,9 @@ class FileParserService
         }
 
         if (self::STATUS_ADDING_VENDOR === $this->status) {
-            $this->currentMenuPosition = new Menu();
-            $this->menus[] = $this->currentMenuPosition;
             $this->currentVendor = $this->getVendor($line);
+            $this->currentMenuPosition = new Menu($this->currentVendor);
+            $this->menus[] = $this->currentMenuPosition;
             $this->currentMenuPosition->setVendor($this->currentVendor);
 
             $this->status = self::STATUS_ADDING_MENU_POSITION;

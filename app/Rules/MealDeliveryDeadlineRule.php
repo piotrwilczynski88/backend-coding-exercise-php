@@ -25,6 +25,6 @@ class MealDeliveryDeadlineRule implements IMealRule
         $minDelivery = new DateTime();
         $minDelivery->add(new DateInterval('PT' . $meal->getAdvanceTime()->getHours() . 'H'));
 
-        return $minDelivery <= $this->deadline;
+        return $this->deadline->getTimestamp() - $minDelivery->getTimestamp() >= 0;
     }
 }
