@@ -11,6 +11,7 @@ use App\Models\Menu;
 use App\Models\Vendor;
 use Exception;
 use SplFileObject;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class FileParserService
 {
@@ -39,22 +40,23 @@ class FileParserService
 
     /**
      * @throws Exception
+     * @throws FileNotFoundException
      *
      * @return Menu[]
      */
     public function getMenus(string $filename): array
     {
         if (!is_readable($filename)) {
-            throw new Exception('File ' . $filename . ' is not readable');
+            throw new FileNotFoundException(null, 0, null, $filename);
         }
         $file = new SplFileObject($filename);
         // Read file line by line to handle big ones
         while (!$file->eof()) {
             try {
-                $line = $file->fgets();
+                $line = trim($file->fgets());
                 $this->parseLine($line);
             } catch (UnexpectedLineContentException $exception) {
-                throw new FileParseException('Unexpected line content at line: ' . $file->key());
+                throw new FileParseException('Unexpected line content at line: ' . $file->key(), $exception->getCode(), $exception);
             }
         }
 
@@ -69,7 +71,7 @@ class FileParserService
      */
     private function parseLine(string $line): void
     {
-        if ("\r\n" === $line) {
+        if ('' === $line && $this->status === self::STATUS_ADDING_MENU_POSITION) {
             $this->status = self::STATUS_ADDING_VENDOR;
 
             return;
@@ -91,18 +93,23 @@ class FileParserService
 
             return;
         }
-        throw new UnexpectedLineContentException();
     }
 
     /**
      * @throws CreateObjectException
+     * @throws UnexpectedLineContentException
      */
     private function getMeal(string $line): Meal
     {
         $attributes = explode(';', $line);
         [$name, $allergiesString, $advanceTime] = $attributes;
+
+        // ensure line is a meal line by validating advance time.
+        if (!preg_match('/^\d+h$/', $advanceTime)) {
+            throw new UnexpectedLineContentException();
+        }
         $allergies = explode(',', $allergiesString);
-        if (empty($name) || empty($advanceTime)) {
+        if (empty($name)) {
             throw new CreateObjectException(Meal::class);
         }
 
@@ -111,12 +118,17 @@ class FileParserService
 
     /**
      * @throws CreateObjectException
+     * @throws UnexpectedLineContentException
      */
     private function getVendor(string $line): Vendor
     {
         $attributes = explode(';', $line);
         [$name, $postcode, $maxCovers] = $attributes;
-        if (empty($name) || empty($postcode) || empty($maxCovers)) {
+        if (!preg_match('/^[0-9]+$/', $maxCovers)) {
+            // ensure line is a vendor line. max covers is only numeric, advance time not
+            throw new UnexpectedLineContentException();
+        }
+        if (empty($name) || empty($postcode)) {
             throw new CreateObjectException(Vendor::class);
         }
 

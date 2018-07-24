@@ -16,7 +16,7 @@ class Vendor
     /** @var array */
     protected $menuPositions = [];
 
-    public function __construct($name, $postcode, $maxCovers)
+    public function __construct(string $name, string $postcode, int $maxCovers)
     {
         $this->name = $name;
         $this->postcode = $postcode;
