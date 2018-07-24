@@ -9,8 +9,6 @@ class FileParserServiceTest extends TestCase
 {
     public function testGetMenus()
     {
-        $this->assertTrue(true);
-
         $fileParser = new FileParserService();
         $filename = $_SERVER['DOCUMENT_ROOT'] . 'tests/resources/test_valid_input.ebnf';
         $menus = $fileParser->getMenus($filename);
@@ -21,6 +19,5 @@ class FileParserServiceTest extends TestCase
             $mealsCount += count($menu->getMeals());
         }
         $this->assertSame(5, $mealsCount);
-
     }
 }

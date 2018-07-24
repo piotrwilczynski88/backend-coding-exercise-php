@@ -19,7 +19,7 @@ class MenuFilterService
     public function filter(array $menus, array $menuRules, $mealRules = []): array
     {
         return array_filter($menus, function ($menu) use ($menuRules, $mealRules) {
-            /** @var Menu $menu */
+            /* @var Menu $menu */
             foreach ($menuRules as $rule) {
                 if (!$rule->validate($menu)) {
                     return false;

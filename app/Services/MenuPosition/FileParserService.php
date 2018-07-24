@@ -56,7 +56,6 @@ class FileParserService
             } catch (UnexpectedLineContentException $exception) {
                 throw new FileParseException('Unexpected line content at line: ' . $file->key());
             }
-
         }
 
         return $this->menus;
@@ -72,6 +71,7 @@ class FileParserService
     {
         if ("\r\n" === $line) {
             $this->status = self::STATUS_ADDING_VENDOR;
+
             return;
         }
 
@@ -82,11 +82,13 @@ class FileParserService
             $this->currentMenuPosition->setVendor($this->currentVendor);
 
             $this->status = self::STATUS_ADDING_MENU_POSITION;
+
             return;
         }
 
         if (self::STATUS_ADDING_MENU_POSITION === $this->status) {
             $this->currentMenuPosition->addMeal($this->getMeal($line));
+
             return;
         }
         throw new UnexpectedLineContentException();
