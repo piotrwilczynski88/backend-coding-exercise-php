@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\MenuPosition;
 
 use App\Exceptions\CreateObjectException;
 use App\Exceptions\FileParseException;
+use App\Exceptions\UnexpectedLineContentException;
 use App\Services\MenuPosition\FileParserService;
 use Tests\TestCase;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
@@ -85,6 +86,26 @@ class FileParserServiceTest extends TestCase
         $filename = $_SERVER['DOCUMENT_ROOT'] . 'tests/resources/invalid_vendor_name.ebnf';
 
         $this->expectException(CreateObjectException::class);
+
+        $fileParser->getMenus($filename);
+    }
+
+    public function testWrongVendorParameterCount(): void
+    {
+        $fileParser = new FileParserService();
+        $filename = $_SERVER['DOCUMENT_ROOT'] . 'tests/resources/invalid_vendor_parameter_count.ebnf';
+
+        $this->expectException(FileParseException::class);
+
+        $fileParser->getMenus($filename);
+    }
+
+    public function testWrongMealParameterCount(): void
+    {
+        $fileParser = new FileParserService();
+        $filename = $_SERVER['DOCUMENT_ROOT'] . 'tests/resources/invalid_meal_parameter_count.ebnf';
+
+        $this->expectException(FileParseException::class);
 
         $fileParser->getMenus($filename);
     }
