@@ -1,11 +1,11 @@
 <?php
 
-namespace App\tests\Unit\Rules;
+namespace Tests\Unit\Rules;
 
 use App\Models\Menu;
 use App\Models\Vendor;
 use App\Rules\MenuPostcodeRule;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class MenuPostcodeRuleTest extends TestCase
 {

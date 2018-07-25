@@ -1,9 +1,9 @@
 <?php
 
-namespace App\tests\Unit\Rules;
+namespace Tests\Unit\Rules;
 
 use App\Rules\InputCoversRule;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class InputCoversRuleTest extends TestCase
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\tests\Unit\Rules;
+namespace Ttests\Unit\Rules;
 
 use App\Rules\InputDateRule;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class InputDateRuleTest extends TestCase
 {

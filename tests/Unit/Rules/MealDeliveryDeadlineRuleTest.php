@@ -1,13 +1,13 @@
 <?php
 
-namespace App\tests\Unit\Rules;
+namespace Tests\Unit\Rules;
 
 use App\Models\AdvanceTime;
 use App\Models\Meal;
 use App\Rules\MealDeliveryDeadlineRule;
 use DateInterval;
 use DateTime;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class MealDeliveryDeadlineRuleTest extends TestCase
 {

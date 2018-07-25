@@ -1,11 +1,11 @@
 <?php
 
-namespace App\tests\Unit\Services\MenuPosition;
+namespace Tests\Unit\Services\MenuPosition;
 
 use App\Exceptions\CreateObjectException;
 use App\Exceptions\FileParseException;
 use App\Services\MenuPosition\FileParserService;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 
 class FileParserServiceTest extends TestCase

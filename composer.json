@@ -4,6 +4,11 @@
       "App\\": "app/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
   "require": {
     "symfony/console": "^4.1",
     "friendsofphp/php-cs-fixer": "^2.12",
