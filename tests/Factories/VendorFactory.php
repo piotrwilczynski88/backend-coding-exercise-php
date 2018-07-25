@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Factory;
+namespace Tests\Factories;
 
 use App\Models\Vendor;
 
